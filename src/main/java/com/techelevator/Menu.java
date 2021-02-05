@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Menu {
 	
-	String[] options;
+	private String[] options;
 	
 	public Menu(String[] options) {
 		this.options = options;

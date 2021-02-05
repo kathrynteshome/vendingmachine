@@ -1,8 +1,7 @@
 package com.techelevator;
 
 import org.junit.Test;
-
-import org.junit.*;
+import org.junit.Assert;
 
 public class PuchaseMenuTest {
 
@@ -20,7 +19,7 @@ public class PuchaseMenuTest {
 		//Assert
 		double sum = userInput1 + userInput2;
 		//Act
-		Assert.assertEquals(6.00, sum);
+		Assert.assertEquals(6.00, sum, 0);
 	}
 	
 	//Select product number
