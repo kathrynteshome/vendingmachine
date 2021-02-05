@@ -8,49 +8,27 @@ public class Item {
 
 	private String itemID = "";
 	private String name = "";
-	private String type = "";
 	private double price;
+	private String type = "";
 	private int quantity = 5;
 	
-	public Item() {
+	public Item(String itemID, String name, String price, String type) {
 		this.itemID = itemID;
 		this.name = name;
+		this.price = Double.parseDouble(price);
 		this.type = type;
-		this.price = price;
-		this.quantity = quantity;
+		
 	}
 	
-	public String[] parseItemFile() {
-		String [] itemDetails = null;
-		File vendingMachineCSV = new File ("vendingmachine.csv"); 
-		
-		try(Scanner opensVendingMachineCSV = new Scanner (vendingMachineCSV)){
-		
-			if (opensVendingMachineCSV.hasNext()) {
-				String thisLine = opensVendingMachineCSV.nextLine();
-				itemDetails = thisLine.split("\\|");
-				
-			}
-		} catch (FileNotFoundException e){
-			System.out.println("FileNotFound");
-		}
-		
-		return itemDetails;
-	}
-	
-	public int getQuantity() {
-		
+	public int getQuantity() {	
 		return quantity;
 	}
 	
-	public void setQuantity(int quantity) {
-		this.quantity = quantity - 1;
+	public int setQuantity(int quantity) {
+		return this.quantity = quantity - 1;
 	}
 	
 	public String getItemID() {
-		
-		itemID = itemDetails[0];
-		
 		return itemID;
 	}
 	
@@ -58,13 +36,15 @@ public class Item {
 		return name;
 	}
 	
+	public double getPrice() {
+		return price;
+	}
+	
 	public String getType() {
 		return type;
 	}
 	
-	public double getPrice() {
-		return price;
-	}
+	
 
 
 }
