@@ -14,8 +14,8 @@ public class Inventory {
 
 	
 	
-	public Inventory(Item list) {
-		this.inventory = inventory;
+	public Inventory() {
+		parseItemFile();
 	}
 	
 	public String[] parseItemFile() {
