@@ -2,7 +2,13 @@ package com.techelevator;
 
 import java.util.Scanner;
 
-public abstract class Menu {
+public class Menu {
+	
+	String[] options;
+	
+	public Menu(String[] options) {
+		this.options = options;
+	}
 	
 	public String getUserInput() {
 		Scanner userInput = new Scanner(System.in);
@@ -11,15 +17,15 @@ public abstract class Menu {
 		return input;
 	}
 	
-	public void displayOptions(String[] options) {
+	public String displayOptions() {
 		int optionNum = 1;
+		String optionsChoice = "";
 		
 		for (String option : options) {
-			System.out.println(optionNum + ") " + option);
+			optionsChoice += optionNum + ") " + option + "\n";
 			optionNum++;
 		}
+		
+		return optionsChoice;
 	}
-	
-	public abstract void processUserInput(String input);
-
 }
