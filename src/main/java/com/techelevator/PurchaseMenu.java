@@ -19,13 +19,10 @@ public class PurchaseMenu extends Menu {
 			feedMoney();
 
 		} else if (userIn.equals("2")) { // select an item
-
-		} else if (userIn.equals("3")) { // finalize transaction
-			/*
-			 * display change given in quarters, dimes, nickels, and pennies use smallest
-			 * amount possible (0.55 => 2 quarters, 1 nickel) currmoney = 0; append to
-			 * Log.txt
-			 */
+			selectItem();
+			
+		} else if (userIn.equals("3")) { // finalize transaction			
+			finalizeTransaction();
 			return true;
 		} else {
 			System.out.println("I don't recognize that selection?");
@@ -82,6 +79,29 @@ public class PurchaseMenu extends Menu {
 				System.out.println("There is no " + selection + " slot.");
 			}
 		}
+	}
+	
+	private void finalizeTransaction() {
+		String change = "";
+		
+		while (currBalance > 0.008) {
+			if (currBalance >= 0.25) {
+				change += (int)(currBalance / 0.25) + " quarters\n";
+				currBalance -= (int)(currBalance / 0.25);
+			} else if (currBalance >= 0.1) {
+				change += (int)(currBalance / 0.1) + " dimes\n";
+				currBalance -= (int)(currBalance / 0.25);
+			} else if (currBalance >= 0.05) {
+				change += (int)(currBalance / 0.05) + " nickels\n";
+				currBalance -= (int)(currBalance / 0.25);
+			} else if (currBalance >= 0.01) {
+				change += (int)(currBalance / 0.01) + " pennies";
+				currBalance -= (int)(currBalance / 0.25);
+			}
+		}
+		
+		System.out.println(change);
+		// Log.txt
 	}
 
 }
