@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 public class PurchaseMenu extends Menu {
 
 	private double currBalance = 0;
@@ -20,15 +19,37 @@ public class PurchaseMenu extends Menu {
 		this.inventory = inventory;
 	}
 
+	public double getCurrBalance() {
+		return currBalance;
+	}
+
+	public void setCurrBalance(double amnt) {
+		this.currBalance = amnt;
+	}
+	
 	public boolean handleInput(String userIn) {
 
 		if (userIn.equals("1")) { // feed money
-			feedMoney();
+			System.out.println("How much money would you like to input? ($1, $5, $10)");
+			String moneyFed = this.getUserInput();
+			
+			feedMoney(moneyFed);
+			
 		} else if (userIn.equals("2")) { // select an item
-			selectItem();
+			// Print out inventory
+			for (Item item : inventory) {
+				System.out.println(item.getItemID() + ": " + item.getName() + "  $" + item.getPrice());
+			}
+
+			System.out.print("Enter slot number (A1, B3, C2, etc): ");
+			String selection = this.getUserInput();
+			
+			System.out.println(selectItem(selection));
+			
 		} else if (userIn.equals("3")) { // finalize transaction
-			finalizeTransaction();
+			System.out.println(finalizeTransaction());
 			return true;
+			
 		} else {
 			System.out.println("I don't recognize that selection?");
 		}
@@ -36,92 +57,107 @@ public class PurchaseMenu extends Menu {
 		return false;
 	}
 
-	public void feedMoney() {
-		System.out.println("How much money would you like to input? ($1, $5, $10)");
-		String moneyFed = this.getUserInput();
-
-		if (moneyFed.equals("1") || moneyFed.equals("5")
-				|| moneyFed.equals("10")) {
+	public void feedMoney(String moneyFed) {
+		if (moneyFed.equals("1") || moneyFed.equals("5") || moneyFed.equals("10")) {
 			Double startingBalance = currBalance;
 			currBalance += Double.parseDouble(moneyFed);
-			// Append to Log.txt moneyFed
+			// Append to Log.txt
 			recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
-				
+
 		} else {
 			System.out.println("That's not an acceptable ammount.");
 		}
 	}
 
-	public String selectItem() {
-		String returnString = "";
+	public String selectItem(String userIn) {
+		String output = "";
+		int indexOfInput = -1;
 		
-		// Print out inventory
-		for (Item item : inventory) {
-			System.out.println(item.getItemID() + ": " + item.getName() + "  $" + item.getPrice());
+		if (userIn == null) {
+			return "You didn't make a selection.";
 		}
-
-		System.out.print("Enter slot number (A1, B3, C2, etc): ");
-		String selection = this.getUserInput();
-
-		for (Item item : inventory) {
-			if (item.getItemID().equals(selection) && item.getQuantity() > 0 && item.getPrice() < currBalance) {
-				Double startingBalance = currBalance;
-				System.out.println(item.getName() + " is " + item.getPrice() + ", you have "
-						+ (currBalance - item.getPrice()) + " left.");
-				
-				switch (item.getType().toLowerCase()) {
-				case "chip":
-					returnString += ("Crunch Crunch, Yum!");
-					break;
-				case "candy":
-					returnString += ("Munch Munch, Yum!");
-					break;
-				case "drink":
-					returnString += ("Glug Glug, Yum!");
-					break;
-				case "gum":
-					returnString += ("Chew Chew, Yum!");
-					break;
-				}
-
-				currBalance -= item.getPrice();
-				item.setQuantity();
-				// append to Log.txt
-				recordTransaction(item.getName() + " " + item.getType() + ": " + startingBalance + " " + currBalance);
-			} else if (!item.getItemID().equals(selection)){
-				returnString += ("There is no " + selection + " slot.");
-			} else if (item.getQuantity() <= 0) {
-				returnString += ("Out of stock.");
-			} else {
-				returnString += ("Insufficient funds.");
+		
+		for (int i = 0; i < inventory.size(); i++) {
+			if (inventory.get(i).getItemID().equals(userIn)) {
+				indexOfInput = i;
+				break;
 			}
 		}
 		
-		return returnString;
+		if (indexOfInput == -1) {
+			output += "There is no " + userIn + " slot.";
+		} else {	
+			String name = inventory.get(indexOfInput).getName();
+			String ID = inventory.get(indexOfInput).getItemID();
+			String type = inventory.get(indexOfInput).getType().toLowerCase();
+			double price = inventory.get(indexOfInput).getPrice();
+			double startingBalance = currBalance;
+			int quantity = inventory.get(indexOfInput).getQuantity();
+			
+			
+			
+			if (quantity <= 0) {
+				output += "Out of stock.";
+			} else if (price > currBalance){
+				output += "Insufficient funds.";
+			} else if (userIn.isBlank() || userIn.isEmpty()) {
+				output += "You didn't make a selection.";
+			} else {
+				System.out.println(name + " is " + price + ", you have "
+						+ (currBalance - price) + " left.");
+	
+				switch (type) {
+				case "chips":
+					output += "Crunch Crunch, Yum!";
+					break;
+				case "candy":
+					output += "Munch Munch, Yum!";
+					break;
+				case "drink":
+					output += "Glug Glug, Yum!";
+					break;
+				case "gum":
+					output += "Chew Chew, Yum!";
+					break;
+				}
+				
+				currBalance -= price;
+				inventory.get(indexOfInput).setQuantity();
+			}
+			
+			
+			// append to Log.txt
+			recordTransaction(name + " " + type + ": " + startingBalance + " " + currBalance);
+		}
+		
+		return output;
 	}
 
 	public String finalizeTransaction() {
 		String numOfCoins = "";
 		Double startingBalance = currBalance;
-		
+		int ammountOfCoins = 0;
+
 		while (currBalance > 0.008) {
 			if (currBalance >= 0.25) {
 				numOfCoins += (int) (currBalance / 0.25) + " quarter(s)\n";
-				currBalance -= (currBalance - (currBalance % 0.25));
+				ammountOfCoins = (int) (currBalance / 0.25) * 25;
 			} else if (currBalance >= 0.1) {
 				numOfCoins += (int) (currBalance / 0.1) + " dime(s)\n";
-				currBalance -= (currBalance / 0.25);
+				ammountOfCoins = (int) (currBalance / 0.1) * 10;
 			} else if (currBalance >= 0.05) {
 				numOfCoins += (int) (currBalance / 0.05) + " nickel(s)\n";
-				currBalance -= (currBalance / 0.25);
+				ammountOfCoins = (int) (currBalance / 0.05) * 5;
 			} else if (currBalance >= 0.01) {
 				numOfCoins += (int) (currBalance / 0.01) + " pennie(s)";
-				currBalance -= (currBalance / 0.25);
+				ammountOfCoins = (int) (currBalance / 0.01) * 1;
 			}
+			
+			currBalance = ((int) (currBalance * 100) - ammountOfCoins) / 100.0;
 		}
-		
+		currBalance = 0;
 		// append to Log.txt
-		recordTransaction("GIVE CHANGE: " + "$" +startingBalance + " $" + 0.00);
+		recordTransaction("GIVE CHANGE: " + "$" + startingBalance + " $" + 0.00);
 
 		return ("Your change is: " + numOfCoins);
 	}
@@ -130,17 +166,17 @@ public class PurchaseMenu extends Menu {
 		File log = new File("Log.txt");
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		
-		try (FileWriter logWriter = new FileWriter(log, true)){						
+
+		try (FileWriter logWriter = new FileWriter(log, true)) {
 			if (!log.exists()) {
 				log.createNewFile();
 			}
 			try (PrintWriter writer = new PrintWriter(logWriter)) {
-					writer.print("> " + formatter.format(date) + " " + transaction + "\n");
+				writer.print("> " + formatter.format(date) + " " + transaction + "\n");
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
-	
+
 }
