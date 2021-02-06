@@ -26,7 +26,6 @@ public class PurchaseMenu extends Menu {
 			feedMoney();
 		} else if (userIn.equals("2")) { // select an item
 			selectItem();
-
 		} else if (userIn.equals("3")) { // finalize transaction
 			finalizeTransaction();
 			return true;
@@ -38,12 +37,11 @@ public class PurchaseMenu extends Menu {
 	}
 
 	private void feedMoney() {
-		String[] acceptableBills = { "1", "5", "10" };
 		System.out.println("How much money would you like to input? ($1, $5, $10)");
 		String moneyFed = this.getUserInput();
 
-		if (moneyFed.equals(acceptableBills[0]) || moneyFed.equals(acceptableBills[1])
-				|| moneyFed.equals(acceptableBills[2])) {
+		if (moneyFed.equals("1") || moneyFed.equals("5")
+				|| moneyFed.equals("10")) {
 			Double startingBalance = currBalance;
 			currBalance += Double.parseDouble(moneyFed);
 			// Append to Log.txt moneyFed
@@ -64,12 +62,12 @@ public class PurchaseMenu extends Menu {
 		String selection = this.getUserInput();
 
 		for (Item item : inventory) {
-			if (item.getItemID().equals(selection) && item.getQuantity() > 0) {
+			if (item.getItemID().equals(selection) && item.getQuantity() > 0 && item.getPrice() < currBalance) {
 				Double startingBalance = currBalance;
 				System.out.println(item.getName() + " is " + item.getPrice() + ", you have "
 						+ (currBalance - item.getPrice()) + " left.");
 				
-				switch (item.getType()) {
+				switch (item.getType().toLowerCase()) {
 				case "chip":
 					System.out.println("Crunch Crunch, Yum!");
 					break;
@@ -85,35 +83,40 @@ public class PurchaseMenu extends Menu {
 				}
 
 				currBalance -= item.getPrice();
+				item.setQuantity();
 				// append to Log.txt
 				recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
-			} else {
+			} else if (!item.getItemID().equals(selection)){
 				System.out.println("There is no " + selection + " slot.");
+			} else if (item.getQuantity() <= 0) {
+				System.out.println("Out of stock.");
+			} else {
+				System.out.println("Insufficient funds.");
 			}
 		}
 	}
 
 	private void finalizeTransaction() {
-		String change = "";
+		String numOfCoins = "";
 		Double startingBalance = currBalance;
 		
 		while (currBalance > 0.008) {
 			if (currBalance >= 0.25) {
-				change += (int) (currBalance / 0.25) + " quarters\n";
-				currBalance -= (int) (currBalance / 0.25);
+				numOfCoins += (int) (currBalance / 0.25) + " quarters\n";
+				currBalance -= (currBalance - (currBalance % 0.25));
 			} else if (currBalance >= 0.1) {
-				change += (int) (currBalance / 0.1) + " dimes\n";
-				currBalance -= (int) (currBalance / 0.25);
+				numOfCoins += (int) (currBalance / 0.1) + " dimes\n";
+				currBalance -= (currBalance / 0.25);
 			} else if (currBalance >= 0.05) {
-				change += (int) (currBalance / 0.05) + " nickels\n";
-				currBalance -= (int) (currBalance / 0.25);
+				numOfCoins += (int) (currBalance / 0.05) + " nickels\n";
+				currBalance -= (currBalance / 0.25);
 			} else if (currBalance >= 0.01) {
-				change += (int) (currBalance / 0.01) + " pennies";
-				currBalance -= (int) (currBalance / 0.25);
+				numOfCoins += (int) (currBalance / 0.01) + " pennies";
+				currBalance -= (currBalance / 0.25);
 			}
 		}
 
-		System.out.println(change);
+		System.out.println("Your change is: " + numOfCoins);
 		// Log.txt
 		recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
 	}
