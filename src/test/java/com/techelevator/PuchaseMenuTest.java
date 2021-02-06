@@ -1,14 +1,61 @@
 package com.techelevator;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 
 public class PuchaseMenuTest {
-
+	
+	@Test
+	public void minimal_change_test() {
+		
+		//Arrange
+		String [] testStringArray = {"Feed Money", "Select Product", "Finish Transaction"};
+		List<Item> inventory = new ArrayList <>();
+		Item testItemClass1 = new Item("A1", "Potato Crisps", "3.05", "Chips");
+		Item testItemClass2 = new Item ("D2", "Little League Chew", "0.95", "Gum");
+		inventory.add(testItemClass1);
+		inventory.add(testItemClass2);
+		PurchaseMenu test = new PurchaseMenu(testStringArray, inventory);
+		
+		//Assert
+		Double startingBalance = 6.89;
+		String expectation = "Your change is: 27 quarter(s)\n1 dime(s)\4 pennies";
+		String reality = test.finalizeTransaction();
+		
+		//Act
+		Assert.assertEquals (expectation, reality);
+	}
+	//check current balance for each of the methods
+	
+	@Test
+	public void does_handle_input_return_method_for_one() {
+		//Arrange
+		String [] testStringArray = {"Feed Money", "Select Product", "Finish Transaction"};
+		List<Item> inventory = new ArrayList <>();
+		Item testItemClass1 = new Item("A1", "Potato Crisps", "3.05", "Chips");
+		Item testItemClass2 = new Item ("D2", "Little League Chew", "0.95", "Gum");
+		inventory.add(testItemClass1);
+		inventory.add(testItemClass2);
+		PurchaseMenu test = new PurchaseMenu(testStringArray, inventory);
+		//Assert
+		
+		boolean expected = test.handleInput();
+		boolean actual = 
+		//Act
+		Assert.assertEquals(expected, actual);
+		
+	}
+	
 	@Test
 	public void does_loop_add_money() {
 		//Arrange
-		PurchaseMenu test = new PuchaseMenu();
+		String [] testStringArray = {"Feed Money", "Select Product", "Finish Transaction"};
+		List<Item> inventory = new ArrayList <>();
+		PurchaseMenu test = new PurchaseMenu(testStringArray, inventory);
 		double userInput1 = 1.00;
 		double userInput2 = 5.00;
 		//Assert
