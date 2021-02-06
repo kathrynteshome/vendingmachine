@@ -102,16 +102,16 @@ public class PurchaseMenu extends Menu {
 		
 		while (currBalance > 0.008) {
 			if (currBalance >= 0.25) {
-				numOfCoins += (int) (currBalance / 0.25) + " quarters\n";
+				numOfCoins += (int) (currBalance / 0.25) + " quarter(s)\n";
 				currBalance -= (currBalance - (currBalance % 0.25));
 			} else if (currBalance >= 0.1) {
-				numOfCoins += (int) (currBalance / 0.1) + " dimes\n";
+				numOfCoins += (int) (currBalance / 0.1) + " dime(s)\n";
 				currBalance -= (currBalance / 0.25);
 			} else if (currBalance >= 0.05) {
-				numOfCoins += (int) (currBalance / 0.05) + " nickels\n";
+				numOfCoins += (int) (currBalance / 0.05) + " nickel(s)\n";
 				currBalance -= (currBalance / 0.25);
 			} else if (currBalance >= 0.01) {
-				numOfCoins += (int) (currBalance / 0.01) + " pennies";
+				numOfCoins += (int) (currBalance / 0.01) + " pennie(s)";
 				currBalance -= (currBalance / 0.25);
 			}
 		}
