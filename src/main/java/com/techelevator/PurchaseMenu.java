@@ -36,7 +36,7 @@ public class PurchaseMenu extends Menu {
 		return false;
 	}
 
-	private void feedMoney() {
+	public void feedMoney() {
 		System.out.println("How much money would you like to input? ($1, $5, $10)");
 		String moneyFed = this.getUserInput();
 
@@ -52,7 +52,7 @@ public class PurchaseMenu extends Menu {
 		}
 	}
 
-	private String selectItem() {
+	public String selectItem() {
 		String returnString = "";
 		
 		// Print out inventory
@@ -100,7 +100,7 @@ public class PurchaseMenu extends Menu {
 		return returnString;
 	}
 
-	private String finalizeTransaction() {
+	public String finalizeTransaction() {
 		String numOfCoins = "";
 		Double startingBalance = currBalance;
 		
@@ -126,7 +126,7 @@ public class PurchaseMenu extends Menu {
 		return ("Your change is: " + numOfCoins);
 	}
 
-	private void recordTransaction(String transaction) {
+	public void recordTransaction(String transaction) {
 		File log = new File("Log.txt");
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
