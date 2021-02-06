@@ -52,7 +52,9 @@ public class PurchaseMenu extends Menu {
 		}
 	}
 
-	private void selectItem() {
+	private String selectItem() {
+		String returnString = "";
+		
 		// Print out inventory
 		for (Item item : inventory) {
 			System.out.println(item.getItemID() + ": " + item.getName() + "  $" + item.getPrice());
@@ -69,34 +71,36 @@ public class PurchaseMenu extends Menu {
 				
 				switch (item.getType().toLowerCase()) {
 				case "chip":
-					System.out.println("Crunch Crunch, Yum!");
+					returnString += ("Crunch Crunch, Yum!");
 					break;
 				case "candy":
-					System.out.println("Munch Munch, Yum!");
+					returnString += ("Munch Munch, Yum!");
 					break;
 				case "drink":
-					System.out.println("Glug Glug, Yum!");
+					returnString += ("Glug Glug, Yum!");
 					break;
 				case "gum":
-					System.out.println("Chew Chew, Yum!");
+					returnString += ("Chew Chew, Yum!");
 					break;
 				}
 
 				currBalance -= item.getPrice();
 				item.setQuantity();
 				// append to Log.txt
-				recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
+				recordTransaction(item.getName() + " " + item.getType() + ": " + startingBalance + " " + currBalance);
 			} else if (!item.getItemID().equals(selection)){
-				System.out.println("There is no " + selection + " slot.");
+				returnString += ("There is no " + selection + " slot.");
 			} else if (item.getQuantity() <= 0) {
-				System.out.println("Out of stock.");
+				returnString += ("Out of stock.");
 			} else {
-				System.out.println("Insufficient funds.");
+				returnString += ("Insufficient funds.");
 			}
 		}
+		
+		return returnString;
 	}
 
-	private void finalizeTransaction() {
+	private String finalizeTransaction() {
 		String numOfCoins = "";
 		Double startingBalance = currBalance;
 		
@@ -115,10 +119,11 @@ public class PurchaseMenu extends Menu {
 				currBalance -= (currBalance / 0.25);
 			}
 		}
+		
+		// append to Log.txt
+		recordTransaction("GIVE CHANGE: " + "$" +startingBalance + " $" + 0.00);
 
-		System.out.println("Your change is: " + numOfCoins);
-		// Log.txt
-		recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
+		return ("Your change is: " + numOfCoins);
 	}
 
 	private void recordTransaction(String transaction) {
