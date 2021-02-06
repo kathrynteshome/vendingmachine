@@ -24,8 +24,8 @@ public class Item {
 		return quantity;
 	}
 	
-	public int setQuantity(int quantity) {
-		return this.quantity = quantity - 1;
+	public void setQuantity() {
+		this.quantity = quantity - 1;
 	}
 	
 	public String getItemID() {
