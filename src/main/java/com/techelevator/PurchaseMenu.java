@@ -36,12 +36,12 @@ public class PurchaseMenu extends Menu {
 			feedMoney(moneyFed);
 			
 		} else if (userIn.equals("2")) { // select an item
-			// Print out inventory
-			for (Item item : inventory) {
-				System.out.println(item.getItemID() + ": " + item.getName() + "  $" + item.getPrice());
-			}
+//			// Print out inventory
+//			for (Item item : inventory) {
+//				System.out.println(item.getItemID() + ": " + item.getName() + "  $" + item.getPrice());
+//			}
 
-			System.out.print("Enter slot number (A1, B3, C2, etc): ");
+			System.out.print("\nEnter slot number (A1, B3, C2, etc): ");
 			String selection = this.getUserInput();
 			
 			System.out.println(selectItem(selection));
@@ -51,7 +51,7 @@ public class PurchaseMenu extends Menu {
 			return true;
 			
 		} else {
-			System.out.println("I don't recognize that selection!");
+			System.out.println("\nI don't recognize that selection!");
 		}
 
 		return false;
@@ -65,17 +65,19 @@ public class PurchaseMenu extends Menu {
 			recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
 
 		} else {
-			System.out.println("That's not an acceptable amount.");
+			System.out.println("\nThat's not an acceptable amount.");
 		}
 	}
 
 	public String selectItem(String userIn) {
-		String output = "";
+		String output = "\n";
 		int indexOfInput = -1;
 		
 		if (userIn == null) {
-			return "You didn't make a selection.";
+			return "\nYou didn't make a selection.\n";
 		}
+		
+		userIn = userIn.toUpperCase();
 		
 		for (int i = 0; i < inventory.size(); i++) {//Iterating through
 			if (inventory.get(i).getItemID().equals(userIn)) {
@@ -85,7 +87,7 @@ public class PurchaseMenu extends Menu {
 		}
 		
 		if (indexOfInput == -1) {//Question
-			output += "There is no " + userIn + " slot.";
+			output += "There is no " + userIn + " slot.\n";
 		} else {	
 			String name = inventory.get(indexOfInput).getName();
 			String ID = inventory.get(indexOfInput).getItemID();
@@ -97,31 +99,31 @@ public class PurchaseMenu extends Menu {
 			
 			
 			if (quantity <= 0) {
-				output += "Out of stock.";
+				output += "Out of stock.\n";
 			} else if (price > currBalance){
-				output += "Insufficient funds.";
+				output += "Insufficient funds.\n";
 			} else if (userIn.isEmpty()) {//userIn.isBlank() || 
-				output += "You didn't make a selection.";
+				output += "You didn't make a selection.\n";
 			} else {
-				System.out.println(name + " is " + price + ", you have "
-						+ (currBalance - price) + " left.");
+				System.out.println(name + " is $" + price + ", you have $"
+						+ ((double) (((int)(currBalance * 1000) - (int)(price * 1000)) / 1000.0d)) + " left.\n");
 	
 				switch (type) {
 				case "chips":
-					output += "Crunch Crunch, Yum!";
+					output += "Crunch Crunch, Yum!\n";
 					break;
 				case "candy":
-					output += "Munch Munch, Yum!";
+					output += "Munch Munch, Yum!\n";
 					break;
 				case "drink":
-					output += "Glug Glug, Yum!";
+					output += "Glug Glug, Yum!\n";
 					break;
 				case "gum":
-					output += "Chew Chew, Yum!";
+					output += "Chew Chew, Yum!\n";
 					break;
 				}
 				
-				currBalance -= price;
+				currBalance = (double) (((int)(currBalance * 1000) - (int)(price * 1000)) / 1000.0d);
 				inventory.get(indexOfInput).setQuantity();
 			}
 			
