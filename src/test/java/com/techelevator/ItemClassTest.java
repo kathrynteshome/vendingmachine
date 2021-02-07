@@ -62,8 +62,9 @@ public class ItemClassTest {
 		//Arrange
 		Item test = new Item("A1", "Potato Crisps", "3.05", "Chips");
 		//Assert
-		int input = test.setQuantity(5);
+		test.setQuantity();
+		int actual = test.getQuantity();
 		//Act
-		Assert.assertEquals(4, input);
+		Assert.assertEquals(4, actual);
 	}
 }

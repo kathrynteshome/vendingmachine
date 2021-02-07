@@ -2,8 +2,11 @@ package com.techelevator;
 
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Assert;
 
@@ -94,19 +97,65 @@ public class PurchaseMenuTest {
 
 	@Test
 	public void does_it_update_inventory_class_when_item_is_purchased() {
-	//Arrange
-	Inventory test = new Inventory();
-	int quantity = 5;
-	//Assert
-	
-	
-	//Act
+		//Arrange
+		String[] testStringArray = { "Feed Money", "Select Product", "Finish Transaction" };
+		List<Item> inventory = new ArrayList<>();
+		Item testItemClass1 = new Item("A1", "Potato Crisps", "3.05", "Chips");
+		Item testItemClass2 = new Item("A2", "Potato Crisps", "1.00", "Chips");
+		Item testItemClass3 = new Item("D2", "Little League Chew", "0.95", "Gum");
+		inventory.add(testItemClass1);
+		inventory.add(testItemClass2);
+		inventory.add(testItemClass3);
+		PurchaseMenu test = new PurchaseMenu(testStringArray, inventory);
+
+		for (int i = 0; i < 4; i++) {
+			testItemClass2.setQuantity();
+		}
+		
+		for (int i = 0; i < 5; i++) {
+			testItemClass3.setQuantity();
+		}
+		
+		int expected2 = 1;
+		int actual2 = testItemClass2.getQuantity();
+		int expected3 = 0;
+		int actual3 = testItemClass3.getQuantity();
+		
+		Assert.assertEquals(expected2, actual2);
+		Assert.assertEquals(expected3, actual3);
 	}
-//	
-//	@Test
-//	public void does_it_append_file() {
-//		//Arrange
-//		//Assert
-//		//Act
-//	}
+	
+	@Test
+	public void does_it_append_file() {
+		//Arrange
+		String[] testStringArray = { "Feed Money", "Select Product", "Finish Transaction" };
+		List<Item> inventory = new ArrayList<>();
+		Item testItemClass1 = new Item("A1", "Potato Crisps", "3.05", "Chips");
+		Item testItemClass3 = new Item("D2", "Little League Chew", "0.95", "Gum");
+		inventory.add(testItemClass1);
+		inventory.add(testItemClass3);
+		PurchaseMenu test = new PurchaseMenu(testStringArray, inventory);
+		test.feedMoney("5.00");
+		test.selectItem("A1");
+		boolean actual = false;
+		//Assert
+		File dataFile = new File("Log.txt");
+		try ( Scanner openFile = new Scanner(dataFile)){
+		//Act
+			
+			while (openFile.hasNextLine()){
+				String thisLine = openFile.nextLine();
+
+				if (thisLine.contains("Potato Crisps")){//Looks at last line of log
+					actual = true;
+				}
+			
+			
+		}
+				
+		} catch (Exception e) {
+			System.out.println("File not found.");
+		}
+		Assert.assertEquals(true, actual);
+	}
 }

@@ -51,7 +51,7 @@ public class PurchaseMenu extends Menu {
 			return true;
 			
 		} else {
-			System.out.println("I don't recognize that selection?");
+			System.out.println("I don't recognize that selection!");
 		}
 
 		return false;
@@ -65,7 +65,7 @@ public class PurchaseMenu extends Menu {
 			recordTransaction("Feed Money: " + startingBalance + " " + currBalance);
 
 		} else {
-			System.out.println("That's not an acceptable ammount.");
+			System.out.println("That's not an acceptable amount.");
 		}
 	}
 
@@ -77,14 +77,14 @@ public class PurchaseMenu extends Menu {
 			return "You didn't make a selection.";
 		}
 		
-		for (int i = 0; i < inventory.size(); i++) {
+		for (int i = 0; i < inventory.size(); i++) {//Iterating through
 			if (inventory.get(i).getItemID().equals(userIn)) {
 				indexOfInput = i;
 				break;
 			}
 		}
 		
-		if (indexOfInput == -1) {
+		if (indexOfInput == -1) {//Question
 			output += "There is no " + userIn + " slot.";
 		} else {	
 			String name = inventory.get(indexOfInput).getName();
@@ -100,7 +100,7 @@ public class PurchaseMenu extends Menu {
 				output += "Out of stock.";
 			} else if (price > currBalance){
 				output += "Insufficient funds.";
-			} else if (userIn.isBlank() || userIn.isEmpty()) {
+			} else if (userIn.isEmpty()) {//userIn.isBlank() || 
 				output += "You didn't make a selection.";
 			} else {
 				System.out.println(name + " is " + price + ", you have "
@@ -164,10 +164,10 @@ public class PurchaseMenu extends Menu {
 
 	public void recordTransaction(String transaction) {
 		File log = new File("Log.txt");
-		Date date = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		Date date = new Date();//Question
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");//Question
 
-		try (FileWriter logWriter = new FileWriter(log, true)) {
+		try (FileWriter logWriter = new FileWriter(log, true)) {//Append file, don't replace
 			if (!log.exists()) {
 				log.createNewFile();
 			}
