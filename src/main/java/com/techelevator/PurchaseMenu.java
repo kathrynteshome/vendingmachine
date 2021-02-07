@@ -100,7 +100,7 @@ public class PurchaseMenu extends Menu {
 		return returnString;
 	}
 
-	private String finalizeTransaction() {
+	public String finalizeTransaction() {
 		String numOfCoins = "";
 		Double startingBalance = currBalance;
 		
