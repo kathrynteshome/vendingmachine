@@ -19,10 +19,10 @@ public class Menu {
 	
 	public String displayOptions() {
 		int optionNum = 1;
-		String optionsChoice = "";
+		String optionsChoice = "\n************\n";
 		
 		for (String option : options) {
-			optionsChoice += optionNum + ") " + option + "\n";
+			optionsChoice += optionNum + ") " + option + "\n" + "************\n";
 			optionNum++;
 		}
 		
