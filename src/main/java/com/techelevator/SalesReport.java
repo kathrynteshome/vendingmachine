@@ -12,16 +12,17 @@ import java.util.Scanner;
 
 public class SalesReport {
 
-	private Map<String, Integer> logList = new HashMap<>();
+	private static Map<String, Integer> logList = new HashMap<>();
 	private int count = 0;
 	private List<Item> inventory = new ArrayList<>();
 
 	
 	public SalesReport(List<Item> inventory) {
 		this.inventory = inventory;
+		makeHashMap();
 	}
 	
-	public void makeSalesReport(Map<String, Integer> logList) {
+	public void makeSalesReport(double amnt) {
 		File sales = new File("SalesReport.txt");
 
 		try (FileWriter salesWriter = new FileWriter(sales, true)) {//Append file, don't replace
@@ -31,8 +32,10 @@ public class SalesReport {
 			try (PrintWriter writer = new PrintWriter(salesWriter)) {
 				for (String item : logList.keySet()) {
 					
-					writer.print(item + "|" + logList.get(item));
+					writer.print(item + "|" + logList.get(item) + "\n");
 				}
+				
+				writer.print("TOTAL SALES|" + amnt);
 			}
 		} catch (Exception e) {
 			System.out.println("No file found.");
@@ -48,8 +51,8 @@ public class SalesReport {
 		
 	}
 
-	public void setLogList(String name) {
-		int value = logList.get(name) + 1;
+	public static void setLogList(String name) {
+		int value = logList.get(name);
 		value++;
 		logList.replace(name, value);
 	}

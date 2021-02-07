@@ -12,6 +12,7 @@ import java.util.List;
 public class PurchaseMenu extends Menu {
 
 	private double currBalance = 0;
+	private double totalSales = 0;
 	private List<Item> inventory = new ArrayList<>();
 
 	public PurchaseMenu(String[] options, List<Item> inventory) {
@@ -27,7 +28,7 @@ public class PurchaseMenu extends Menu {
 		this.currBalance = amnt;
 	}
 	
-	public boolean handleInput(String userIn) {
+	public double[] handleInput(String userIn) {
 
 		if (userIn.equals("1")) { // feed money
 			System.out.println("How much money would you like to input? ($1, $5, $10)");
@@ -48,13 +49,13 @@ public class PurchaseMenu extends Menu {
 			
 		} else if (userIn.equals("3")) { // finalize transaction
 			System.out.println(finalizeTransaction());
-			return true;
+			return new double[] { 1, totalSales};
 			
 		} else {
 			System.out.println("\nI don't recognize that selection!");
 		}
 
-		return false;
+		return new double[] { 0, totalSales };
 	}
 
 	public void feedMoney(String moneyFed) {
@@ -124,7 +125,9 @@ public class PurchaseMenu extends Menu {
 				}
 				
 				currBalance = (double) (((int)(currBalance * 1000) - (int)(price * 1000)) / 1000.0d);
+				totalSales += price;
 				inventory.get(indexOfInput).setQuantity();
+				SalesReport.setLogList(name);
 			}
 			
 			

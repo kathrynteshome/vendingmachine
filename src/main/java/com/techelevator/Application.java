@@ -6,7 +6,9 @@ public class Application {
 		Inventory inventory = new Inventory();
 		Menu menu = new Menu(new String[] { "Display Items", "Purchase", "Exit" });
 		PurchaseMenu purchase = new PurchaseMenu(new String[] { "Feed Money", "Select Product", "Finish Transaction" }, inventory.getInventory());
-
+		SalesReport sr = new SalesReport(inventory.getInventory());
+		double totalSales = 0;
+		
 		boolean isRunning = true;
 
 		while (isRunning) {
@@ -27,8 +29,15 @@ public class Application {
 
 					System.out.println(purchase.displayOptions());
 					userIn = purchase.getUserInput();
-
-					finished = purchase.handleInput(userIn);
+					
+					double[] output = purchase.handleInput(userIn);
+					totalSales = output[1];
+					
+					if (output[0] == 0) {
+						finished = false;
+					} else if (output[0] == 1) {
+						finished = true;
+					}
 				}
 
 			} else if (userIn.equals("3")) {
@@ -36,6 +45,8 @@ public class Application {
 				System.out.println("Thank you for using our Vend-a-tron > 9000\nPlease come again");
 				isRunning = false;
 
+			} else if (userIn.equals("4")) {
+				sr.makeSalesReport(totalSales);
 			}
 		}
 	}
