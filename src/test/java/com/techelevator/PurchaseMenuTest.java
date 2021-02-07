@@ -88,11 +88,11 @@ public class PurchaseMenuTest {
 		String testCase5 = test.selectItem(null);
 		
 		// Assert
-		Assert.assertEquals("Insufficient funds.", testCase1);
-		Assert.assertEquals("Crunch Crunch, Yum!", testCase2);
-		Assert.assertEquals("Out of stock.", testCase3);
-		Assert.assertEquals("There is no B2 slot.", testCase4);
-		Assert.assertEquals("You didn't make a selection.", testCase5);
+		Assert.assertEquals("\nInsufficient funds.\n", testCase1);
+		Assert.assertEquals("\nCrunch Crunch, Yum!\n", testCase2);
+		Assert.assertEquals("\nOut of stock.\n", testCase3);
+		Assert.assertEquals("\nThere is no B2 slot.\n", testCase4);
+		Assert.assertEquals("\nYou didn't make a selection.\n", testCase5);
 	}
 
 	@Test
